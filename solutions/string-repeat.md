@@ -29,6 +29,11 @@ Though we have two parameters, both are very simple data types, so our template 
    }
 
 ## TypeScript
+    export function repeatStr (n:number, s:String):String {
+        return s.repeat(n);
+    }
+    
+Note: This requires ES6 (will not work in ES3)
 
 ## Python
     def repeat_string(n, s):
