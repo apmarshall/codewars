@@ -35,7 +35,7 @@ In the second case, we can simply solve for k in the above equations and then tr
 
 There are at least two other boundaries that we should be aware of:
 
-		- N == 0, 2, or 3 -> 0 // 3^1 = 3, so the largest k that satsifieds our requirements is 0. This will also hold for N == and N == 0, but:
+		- N == 0, 2, or 3 -> 0 // 3^1 = 3, so the largest k that satsifieds our requirements is 0. This will also hold for N == 2 and N == 0, but:
 		- N == 1 -> -1 // this is an edge case and a little bit of a "gotcha" in the way this problem is constructed
 		
 The `N == 2` case should be covered by our second case above. `N == 3` should be covered by our first case. However, `N == 0` may trigger an error is some languages (for example, in JavaScript, it may return `-infinity` when using `Math.log`), so it's good to keep these cases in mind. The edge case of `N == 1` is good to know about for reasons we are going to discuss in a moment.
@@ -95,7 +95,7 @@ In Python, we can use a custom base in the `log` function. So our code is slight
 	import math
 	
 	def largestPower(N):
-		if (n == 2 || n == 0):
+		if (n == 2 | n == 0):
 			return 0
 		else if (n == 1):
 			return -1
