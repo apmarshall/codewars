@@ -6,7 +6,7 @@ Contained in this repository are write-ups of problems worked on [CodeWars](http
 
 A few notes about what you'll find here:
 
-First, I am using CodeWars as a way of practicing the style of "Systematic Program Design" as taught by Gregor Kiczales (University of British Colombia, see the How to Code MOOCS) and the authors of [How to Design Programs](), Stephen Bloch, John Clements, Matthias Felleisen, et al. There approach has several key features:
+First, I am using CodeWars as a way of practicing the style of "Systematic Program Design" as taught by Gregor Kiczales (University of British Colombia, see the [How to Code MOOCS](https://www.edx.org/course/how-code-simple-data-ubcx-htc1x)) and the authors of [How to Design Programs](https://www.amazon.com/dp/0262534800/ref=cm_sw_r_cp_tai_f9dzDbYDKAPQN), Stephen Bloch, John Clements, Matthias Felleisen, et al. There approach has several key features:
 - As described, it is systematic. This means it has a consistent process, starting with domain analysis, moving through data design, and concluding with systematically "templating" and then filling in a function.
 - It tends to emphasize functional languages and recursive programming.
 
