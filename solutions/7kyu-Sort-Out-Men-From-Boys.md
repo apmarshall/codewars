@@ -59,9 +59,9 @@ This means we are likely to want to use a recursive template for our function.
     ListOfNumbers -> ListOfNumbers
     Return a ListOfNumbers with even numbers first in ascending order followed by odd numbers in descending order
     
-    MenFromBoys (ListOfNumbers) [] // Stub
+    def (MenFromBoys (ListOfNumbers)) [] // Stub
     
-    (Check-expect (MenFromBoys (7, 3 , 14 , 1)) 14, 17, 7, 3) // one even
+    (Check-expect (MenFromBoys (7, 3 , 14 , 17)) 14, 17, 7, 3) // one even
     (Check-expect (MenFromBoys (49 , 818 , -282 , 900 , 928 , 281 , -282 , -1)) -282 , 818 , 900 , 928 , 281 , 49 , -1) // mix
     (Check-expect (MenFromBoys (-94, -99 , -100 , -99 , -96 , -99)) -100 , -96 , -94 , -99) // one odd
     (Check-expect (MenFromBoys ()) []) // empty input returns empty output
@@ -74,7 +74,58 @@ There appear to be three distinct things happening here:
 - Second, those respective lists are being sorted (ascending and descending, respectively)
 - Third, those lists are being combined together to form the output list
 
+So our main/out function is going to look like this:
 
+    def (MenFromBoys (ListOfNumbers) 
+        Combine( Sort( Separate (ListOfNumbers)))
+    )
+    
+Which leaves us with three "wish-list" functions:
+
+    ListOfNumbers -> ListOfNumbers:Even; ListOfNumbers:Odd
+    Given a list of numbers, produce two lists, the first of the even numbers and the second of the odd numbers (without duplicates)
+    def (Separate (ListOfNumbers)) [] [] // stub
+        
+    ListOfNumbers:Even; ListOfNumbers:Odd -> ListOfNumbers:Even; ListOfNumbers:Odd
+    Given two lists of numbers, sort the numbers (ascending if even, descending if odd)
+    def (Sort( ListOfNumbers)) [] // stub
+    
+    ListOfNumbers:Even; ListOfNumbers:Odd -> ListOfNumbers
+    Given two lists of numbers, adjoin them into a single list
+    def (Combine (ListOfNumbers, ListOfNumbers)) [] //stub
+
+Note that the expected output of our first function, `Separate`, is two lists, not one. This matches the expected input of our second function, `Sort`, and the expected input of our third function `Combine`.
+
+Now lets work on the first function. First, some test cases:
+
+    (Check-expect (Separate (7, 3 , 14 , 17)) [14], [7, 3, 17]) // one even
+    (Check-expect (Separate (49 , 818 , -282 , 900 , 928 , 281 , -282 , -1)) [818, -282, 900, 928],[49, 281, -1]) // mix
+    (Check-expect (Separate (-94, -99 , -100 , -99 , -96 , -99)) [-94, -100, -96], [-99]) // one odd
+    (Check-expect (Separate ()) [], []) // empty input returns empty output
+    (Check-expect (Separate (7, 3 , 15 , 1)) [],[7, 3, 15, 1]) // no evens
+    (Check-expect (Separate (8, 4 , 14 , 2)) [8, 4, 14, 2], []) // no odds
+    (Check-expect (Separate (2, 2, 2, 2,)) [2], []) // eliminate duplicates
+    
+Now, our basic template:
+    def (Separate (ListOfNumbers) 
+        cond: empty? (...)
+        else:
+            (...(first ListOfNumbers)
+                (Separate(rest ListOfNumbers)))
+    )
+    
+We are obviously going to need some sort of "accumulator" here to keep track of our output. In fact, we can go ahead and say we are going to need two accumulators: one for our even list and one for our odd list. Here's what that looks like:
+    
+    def (Separate (ListOfNumbers) 
+        (local [Separate (ListOfNumbers, Even, Odd)
+            cond: empty? (... Even, Odd)
+            else:
+                (... Even, Odd
+                    (first ListOfNumbers)
+                    (Separate(rest ListOfNumbers))
+                            (... Even, Odd, first ListOfNumbers)]
+        Separate (ListOfNumbers))
+    
 
 ## Python
 
