@@ -83,7 +83,7 @@ So our main/out function is going to look like this:
 Which leaves us with three "wish-list" functions:
 
     ListOfNumbers -> ListOfNumbers:Even; ListOfNumbers:Odd
-    Given a list of numbers, produce two lists, the first of the even numbers and the second of the odd numbers (without duplicates)
+    Given a list of numbers, produce two lists, the first of the even numbers and the second of the odd numbers
     def (Separate (ListOfNumbers)) [] [] // stub
         
     ListOfNumbers:Even; ListOfNumbers:Odd -> ListOfNumbers:Even; ListOfNumbers:Odd
@@ -122,10 +122,25 @@ We are obviously going to need some sort of "accumulator" here to keep track of 
             else:
                 (... Even, Odd
                     (first ListOfNumbers)
-                    (Separate(rest ListOfNumbers))
-                            (... Even, Odd, first ListOfNumbers)]
-        Separate (ListOfNumbers))
-    
+                    (Separate(rest ListOfNumbers, Even, Odd))
+                            (... Even, Odd, first ListOfNumbers)
+        ])
+        Separate (ListOfNumbers, Even, Odd))
+
+Now we can fill in this template. Essentially, what we want to do at each stage is: (1) if the number is even, add it to the even list, or (2) if the number is odd, add it to the odd list. When we run out of numbers, we'll return both lists. Here's what that's going to look like:
+
+    def (Separate (ListOfNumbers)
+        (local [Separate (ListOfNumbers, Even, Odd) 
+            cond: empty? (return Even, Odd)
+            else:
+                cond: ((first ListOfNumbers) % 2 == 0):
+                    Add (first ListOfNumbers) to Even
+                else: Add (first ListOfNumbers) to Odd
+                (Separate (rest ListOfNumbers, Even, Odd))
+        ])    
+        Separate (ListOfNumbers, [], []))
+        
+Wala! That function should now be done. On to the other two.
 
 ## Python
 
