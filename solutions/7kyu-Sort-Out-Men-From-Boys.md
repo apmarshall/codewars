@@ -142,7 +142,69 @@ Now we can fill in this template. Essentially, what we want to do at each stage 
         
 Wala! That function should now be done. On to the other two.
 
+	def (Sort (List1, List2) 
+		sort-ascending(removeDuplicates(List1))
+		sort-descending (removeDuplicates(List2))
+		return List1, List 2
+	)
+	
+	def (Combine (List1, List2)
+		return join(List1, List2))
+
+These two are much simpler for two reasons: first, because we assume that there exist already functions in most languages for sorting, removing duplicates, and joining lists. And second, because in these functions the list itself is the primary object being worked with (as opposed to the arbitrary number of items within each list). In other words, in the first function, we were evaluating whether each unique item in the given list was even or odd. Since there could be an arbitrary number of these in a given list, we needed to use a recursive format that can deal with that arbitrary length. In these functions, however, our primary question is at the list level: is this list sorted? Does this list contain duplicates? Have we combined the lists? At this level of abstraction, we know we are only dealing with one or two items (the lists themselves), so we don't need to worry about recursion. Of course, the internal methods we call to do the sorting and remove the duplciates might work on an individual level, but we're abstracting away from those, so we don't have to worry about that.
+
+So here's our final body of pseudo-code:
+	def (MenFromBoys (ListOfNumbers) 
+        Combine( Sort( Separate (ListOfNumbers)))
+    )
+    
+    def (Separate (ListOfNumbers)
+        (local [Separate (ListOfNumbers, Even, Odd) 
+            cond: empty? (return Even, Odd)
+            else:
+                cond: ((first ListOfNumbers) % 2 == 0):
+                    Add (first ListOfNumbers) to Even
+                else: Add (first ListOfNumbers) to Odd
+                (Separate (rest ListOfNumbers, Even, Odd))
+        ])    
+        Separate (ListOfNumbers, [], []))
+        
+    def (Sort (List1, List2) 
+		sort-ascending(removeDuplicates(List1))
+		sort-descending (removeDuplicates(List2))
+		return List1, List 2
+	)
+	
+	def (Combine (List1, List2)
+		return join(List1, List2)) 
+
+
 ## Python
+
+Let's translate this into a real language. We'll start with Python, which can handle our recursive structure:
+
+def menFromBoys (ListOfNumbers):
+	CombineList ( SortList ( SeparateList (ListOfNumbers) ) )
+	
+def SeparateList (ListOfNumbers):
+	def Separate (ListOfNumbers, Even, Odd):
+		if not ListOfNumbers: 
+			return Even, Odd
+		else:
+			if ListOfNumbers[0] % 2 == 0:
+				Even.add(ListOfNumbers[0])
+			else:
+				Odd.add(ListOfNumbers[0])
+			Separate (ListOfNumbers[1:], Even, Odd)
+	return Separate (ListOfNumbers, set(), set())
+	
+def SortList(Tuple):
+	List1 = sort(list(Tuple[0]))
+	List2 = sort(list(Tuple[1], reverse=True))
+	return (List1, List2)
+	
+def CombineList (Tuple)
+	return Tuple[0] + Tuple[1]
 
 ## PHP
 
